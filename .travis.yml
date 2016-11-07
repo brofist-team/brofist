@@ -29,12 +29,18 @@ php:
 #     - php: 7
 
 before_install:
-  - wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
-  - sudo dpkg -i couchbase-release-1.0-2-amd64.deb
+  # - wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
+  # - sudo dpkg -i couchbase-release-1.0-2-amd64.deb
+  # - sudo apt-get update
+  # - sudo apt-get install libcouchbase-dev build-essential php7.0-dev
+  # # - sudo apt-get install libcouchbase-dev build-essential php-dev
+  # - sudo pecl install couchbase
+
+  - sudo wget -O/etc/apt/sources.list.d/couchbase.list http://packages.couchbase.com/ubuntu/couchbase-ubuntu1204.list
+  - sudo wget http://packages.couchbase.com/ubuntu/couchbase.key && sudo cat couchbase.key | sudo apt-key add -
   - sudo apt-get update
-  - sudo apt-get install libcouchbase-dev build-essential php7.0-dev
-  # - sudo apt-get install libcouchbase-dev build-essential php-dev
-  - sudo pecl install couchbase
+  - sudo apt-get install libcouchbase2 libcouchbase-dev
+
   - ./tests/setup.sh
 
 install:
