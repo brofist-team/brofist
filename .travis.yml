@@ -7,6 +7,13 @@ services:
 
 language: php
 
+env:
+  DOCKER_COMPOSE_VERSION: 1.4.2
+  NAME: brofist_test_couchbase
+  CB_REST_USERNAME: Administrator
+  CB_REST_PASSWORD: password
+  SLEEP_TIME: 20
+
 matrix:
   fast_finish: true
   include:
@@ -17,6 +24,7 @@ matrix:
     - php: 7
 
 before_install:
+  - docker --version
   - mkdir -p build/logs
   - composer self-update
   - ./tests/setup.sh
