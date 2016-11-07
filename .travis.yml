@@ -1,8 +1,11 @@
 sudo: required
+dist: precise
+group: legacy
+
 services:
   - docker
-language: php
 
+language: php
 
 matrix:
   fast_finish: true
