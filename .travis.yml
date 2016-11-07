@@ -32,7 +32,8 @@ before_install:
   - wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
   - sudo dpkg -i couchbase-release-1.0-2-amd64.deb
   - sudo apt-get update
-  - sudo apt-get install libcouchbase-dev build-essential php-dev
+  - sudo apt-get install libcouchbase-dev build-essential
+  # - sudo apt-get install libcouchbase-dev build-essential php-dev
   - sudo pecl install couchbase
   - ./tests/setup.sh
 
