@@ -13,15 +13,20 @@ env:
   CB_REST_USERNAME: Administrator
   CB_REST_PASSWORD: password
   SLEEP_TIME: 20
+  EXECUTE_TEST_COVERALLS: false
 
-matrix:
-  fast_finish: true
-  include:
-    # - php: 5.6
-    #   env:
-    #     - EXECUTE_TEST_COVERALLS=true
-    #     - EXECUTE_CS_CHECK=true
-    - php: 7
+php:
+  - 5.6
+  - 7.0
+
+# matrix:
+#   fast_finish: true
+#   include:
+#     # - php: 5.6
+#     #   env:
+#     #     - EXECUTE_TEST_COVERALLS=true
+#     #     - EXECUTE_CS_CHECK=true
+#     - php: 7
 
 before_install:
   - docker --version
@@ -37,7 +42,6 @@ install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs
 
 script:
-  - ./vendor/bin/phpunit --version
   - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then vendor/bin/phpunit ; fi
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then vendor/bin/phpunit --coverage-clover=./build/logs/clover.xml; fi
 
