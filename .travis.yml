@@ -1,0 +1,31 @@
+sudo: false
+language: php
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.6
+      env:
+        - EXECUTE_TEST_COVERALLS=true
+        - EXECUTE_CS_CHECK=true
+    - php: 7
+    - php: nightly
+    - php: hhvm
+  allow_failures:
+      - php: 5.4
+
+before_install:
+  - mkdir -p build/logs
+  - composer self-update
+  - ./tests/setup.sh
+
+install:
+  - travis_retry composer install --no-interaction --ignore-platform-reqs
+
+script:
+  - ./vendor/bin/phpunit --version
+  - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then vendor/bin/phpunit ; fi
+  - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then vendor/bin/phpunit --coverage-clover=./build/logs/clover.xml; fi
+
+after_script:
+  - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/coveralls ; fi

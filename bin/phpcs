@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -e
+
+./vendor/bin/bro-code fix --dry-run src
+./vendor/bin/bro-code fix --dry-run tests

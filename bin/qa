@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+./bin/phpunit
+./bin/phpmd
+./bin/phpcs

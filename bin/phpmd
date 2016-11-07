@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# https://phpmd.org/documentation/creating-a-ruleset.html
+
+EXIT_CODE=0
+
+function inform() {
+  echo -e '\E[32m'"\033[1m"
+  echo "#############################################################################"
+  echo "# $@"
+  echo "#############################################################################"
+  echo -e "\033[0m"
+}
+
+function phpmd_rule() {
+  local target=$1
+  local rule=$2
+
+  inform "Evaluating $target: Rule: $rule"
+  ./vendor/bin/phpmd $target text $rule
+
+  if (($? != 0)); then
+    EXIT_CODE=1
+  fi
+}
+
+function phpmd() {
+  local target=$1
+  phpmd_rule $target bin/phpmd.xml
+}
+
+phpmd src
+phpmd tests
+
+exit $EXIT_CODE
