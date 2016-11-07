@@ -25,9 +25,12 @@ matrix:
 
 before_install:
   - docker --version
-  - mkdir -p build/logs
-  - composer self-update
-  - ./tests/setup.sh
+  - docker run -d --name $NAME -p 8091-8094:8091-8094 -p 11210:11210 couchbase
+  - sleep $SLEEP_TIME
+  - docker exec -i -t $NAME couchbase-cli cluster-init --cluster-username=$CB_REST_USERNAME --cluster-password=$CB_REST_PASSWORD --cluster-index-ramsize=256 --cluster-ramsize=256 --index-storage-setting=default --services=data,index,query
+  - docker exec -i -t $NAME couchbase-cli bucket-create -c localhost:8091 -u $CB_REST_USERNAME -p $CB_REST_PASSWORD --bucket=test_bucket --bucket-ramsize=100 --wait
+  - sleep $SLEEP_TIME
+  - docker exec -i -t $NAME /opt/couchbase/bin/cbq -u $CB_REST_USERNAME -p $CB_REST_PASSWORD --script='CREATE PRIMARY INDEX `test-bucket-index` ON `test_bucket` USING GSI;'; - composer self-update
 
 install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs
